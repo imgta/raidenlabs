@@ -1,0 +1,32 @@
+volumes:
+  raiden-db:
+    name: raiden-db
+    external: false
+  pg-admin:
+    external: true
+
+services:
+  frontend:
+    image: node:20-bullseye
+    container_name: react_front
+    command: ['npm', 'start']
+    working_dir: /app
+    volumes:
+      - ./front:/app
+    ports:
+      - 3001:3000
+    environment:
+      HOST: 0.0.0.0
+      PUBLIC_URL: http://localhost:3000
+
+  backend:
+    container_name: fastapi
+    environment:
+      CORS_HOST: http://localhost:3000
+    build:
+      context: api
+      dockerfile: Dockerfile.dev
+    ports:
+    - 8000:8000
+    volumes:
+    - ./api:/app
