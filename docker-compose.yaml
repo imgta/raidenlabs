@@ -2,7 +2,7 @@ volumes:
   raiden-db:
     name: raiden-db
     external: false
-  pg-admin:
+  mongo-db:
     external: true
 
 services:
@@ -14,10 +14,12 @@ services:
     volumes:
       - ./front:/app
     ports:
-      - 3001:3000
+      - 3000:3000
     environment:
+      NODE_ENV: development
       HOST: 0.0.0.0
       PUBLIC_URL: http://localhost:3000
+      REACT_APP_API_HOST: ${REACT_APP_API_HOST}
 
   backend:
     container_name: fastapi
